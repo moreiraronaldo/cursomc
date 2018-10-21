@@ -13,6 +13,7 @@ import com.moreiraronaldo.cursomc.domain.Cidade;
 import com.moreiraronaldo.cursomc.domain.Cliente;
 import com.moreiraronaldo.cursomc.domain.Endereco;
 import com.moreiraronaldo.cursomc.domain.Estado;
+import com.moreiraronaldo.cursomc.domain.ItemPedido;
 import com.moreiraronaldo.cursomc.domain.Pagamento;
 import com.moreiraronaldo.cursomc.domain.PagamentoComBoleto;
 import com.moreiraronaldo.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.moreiraronaldo.cursomc.reposotories.CidadeRepository;
 import com.moreiraronaldo.cursomc.reposotories.ClienteRepository;
 import com.moreiraronaldo.cursomc.reposotories.EnderecoRepository;
 import com.moreiraronaldo.cursomc.reposotories.EstadoRepository;
+import com.moreiraronaldo.cursomc.reposotories.ItemPedidoRepository;
 import com.moreiraronaldo.cursomc.reposotories.PagamentoRepository;
 import com.moreiraronaldo.cursomc.reposotories.PedidoRepository;
 import com.moreiraronaldo.cursomc.reposotories.ProdutoRepository;
@@ -48,6 +50,8 @@ public class CursomcApplication implements CommandLineRunner {
 	private PedidoRepository pedidoReporsitory;
 	@Autowired
 	private PagamentoRepository pagamentoReporsitory;
+	@Autowired
+	private ItemPedidoRepository itemPedidoReporsitory;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -113,6 +117,19 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		pedidoReporsitory.save(Arrays.asList(ped1,ped2));
 		pagamentoReporsitory.save(Arrays.asList(pagto1,pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00 );
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00 );
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 8080.00 );
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoReporsitory.save(Arrays.asList(ip1,ip2,ip3));
 		
 	}
 }
